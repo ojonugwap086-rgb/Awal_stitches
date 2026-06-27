@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Awal Stitches – Making You Look Good Is Our Priority</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dark: #9A7A30;
+      --brown: #3B2314;
+      --brown-mid: #5C3520;
+      --brown-light: #8B5E3C;
+      --white: #FAF7F2;
+      --off-white: #F0EAE0;
+      --text-dark: #1A0F08;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--brown);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--brown); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      background: rgba(27, 14, 5, 0.0);
+      backdrop-filter: blur(0px);
+      transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(27, 14, 5, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 5%;
+      border-bottom-color: rgba(201,168,76,0.2);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600; color: var(--gold);
+      letter-spacing: 2px; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--white); text-decoration: none;
+      font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+      font-weight: 500; transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold); transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger span { display: block; width: 24px; height: 1.5px; background: var(--gold); transition: 0.3s; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+      background: var(--brown);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(139,94,60,0.15) 0%, transparent 60%),
+        linear-gradient(180deg, #1A0A04 0%, #3B2314 50%, #1A0A04 100%);
+    }
+    .hero-pattern {
+      position: absolute; inset: 0; opacity: 0.04;
+      background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+      background-size: 30px 30px;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 2rem;
+      animation: fadeUp 1.2s ease both;
+    }
+    .hero-eyebrow {
+      font-size: 0.68rem; letter-spacing: 6px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300; line-height: 0.9;
+      color: var(--white); letter-spacing: 4px;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+    .hero-logo-text span { color: var(--gold); font-style: italic; }
+    .hero-divider {
+      width: 80px; height: 1px; background: var(--gold);
+      margin: 2rem auto; animation: expand 1s 0.6s ease both; transform-origin: center;
+    }
+    .hero-slogan {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      font-weight: 300; font-style: italic;
+      color: var(--off-white); letter-spacing: 1px;
+      animation: fadeUp 1s 0.7s ease both;
+    }
+    .hero-cta {
+      display: inline-block; margin-top: 2.5rem;
+      padding: 0.85rem 2.5rem;
+      border: 1px solid var(--gold); color: var(--gold);
+      text-decoration: none; font-size: 0.7rem;
+      letter-spacing: 3px; text-transform: uppercase;
+      transition: all 0.4s; animation: fadeUp 1s 0.9s ease both;
+    }
+    .hero-cta:hover { background: var(--gold); color: var(--brown); }
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: var(--gold); font-size: 0.6rem; letter-spacing: 3px;
+      animation: pulse 2s infinite;
+    }
+    .scroll-hint i { font-size: 0.8rem; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 5%; }
+    .section-eyebrow {
+      font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300;
+      color: var(--white); line-height: 1.1;
+    }
+    .section-title em { color: var(--gold); font-style: italic; }
+    .gold-line {
+      width: 50px; height: 1px; background: var(--gold); margin: 1.5rem 0;
+    }
+    .section-body { color: rgba(250,247,242,0.75); font-size: 0.9rem; line-height: 1.9; }
+
+    /* ── ABOUT ── */
+    #about {
+      background: #26160B;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-image-wrap {
+      position: relative;
+    }
+    .about-image-placeholder {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--brown-mid) 0%, var(--brown) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; color: var(--gold); opacity: 0.5;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .about-accent {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      width: 60%; height: 60%;
+      border: 1px solid rgba(201,168,76,0.3);
+      pointer-events: none;
+    }
+    .about-stat-strip {
+      display: flex; gap: 2rem; margin-top: 2rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 600; color: var(--gold);
+    }
+    .stat-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(250,247,242,0.6); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--brown); text-align: center; }
+    .services-header { max-width: 600px; margin: 0 auto 3.5rem; }
+    .services-header .gold-line { margin: 1.5rem auto; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5px; background: rgba(201,168,76,0.15);
+    }
+    .service-card {
+      background: var(--brown);
+      padding: 2.5rem 1.5rem;
+      transition: background 0.4s;
+      cursor: default;
+    }
+    .service-card:hover { background: #26160B; }
+    .service-icon {
+      font-size: 2rem; color: var(--gold); margin-bottom: 1.2rem;
+      display: block; transition: transform 0.4s;
+    }
+    .service-card:hover .service-icon { transform: scale(1.15); }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+    .service-desc { font-size: 0.78rem; color: rgba(250,247,242,0.55); line-height: 1.7; }
+
+    /* ── GALLERY ── */
+    #gallery { background: #1A0A04; }
+    .gallery-header { margin-bottom: 3rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 1.5px;
+    }
+    .gallery-item {
+      position: relative; overflow: hidden;
+      background: var(--brown-mid);
+      aspect-ratio: 3/4;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; min-height: 420px; }
+    .gallery-item:nth-child(5) { grid-column: span 2; aspect-ratio: auto; min-height: 200px; }
+    .gallery-icon { font-size: 2.5rem; color: rgba(201,168,76,0.3); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(27,14,5,0.7) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.4s;
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--gold); font-style: italic;
+    }
+
+    /* ── WHY CHOOSE US ── */
+    #why { background: var(--brown); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .why-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.8rem; }
+    .why-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .why-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: rgba(201,168,76,0.3);
+      line-height: 1; flex-shrink: 0; width: 2rem; text-align: right;
+    }
+    .why-text h4 {
+      font-size: 0.85rem; letter-spacing: 1px; font-weight: 600;
+      color: var(--white); margin-bottom: 0.35rem;
+    }
+    .why-text p { font-size: 0.8rem; color: rgba(250,247,242,0.6); line-height: 1.7; }
+    .why-visual {
+      position: relative;
+      background: linear-gradient(135deg, #26160B 0%, #3B2314 100%);
+      min-height: 500px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+    .why-visual-inner {
+      text-align: center;
+    }
+    .why-big-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 10vw, 7rem); font-weight: 300;
+      color: rgba(201,168,76,0.08); line-height: 1; letter-spacing: 2px;
+    }
+    .why-badge {
+      position: absolute; bottom: 2rem; right: 2rem;
+      width: 100px; height: 100px;
+      border: 1px solid var(--gold); border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .why-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600; color: var(--gold); line-height: 1;
+    }
+    .why-badge-text { font-size: 0.55rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: #1A0A04; text-align: center; }
+    .testimonials-header { margin-bottom: 3.5rem; }
+    .testimonials-header .gold-line { margin: 1.5rem auto; }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5px; background: rgba(201,168,76,0.1); }
+    .testi-card {
+      background: #1A0A04;
+      padding: 2.5rem 2rem; text-align: left;
+      transition: background 0.4s;
+    }
+    .testi-card:hover { background: #26160B; }
+    .testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 1.2rem; }
+    .testi-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; font-weight: 300;
+      color: var(--white); line-height: 1.7; margin-bottom: 1.5rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--brown-mid); display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1rem;
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+    .testi-name { font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; color: var(--white); }
+    .testi-role { font-size: 0.65rem; color: rgba(250,247,242,0.5); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--brown); }
+    .contact-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+    .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-icon {
+      width: 42px; height: 42px; border: 1px solid rgba(201,168,76,0.4);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 0.9rem; flex-shrink: 0;
+    }
+    .contact-item-label { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .contact-item-value { font-size: 0.9rem; color: var(--white); }
+    .contact-item-value a { color: var(--white); text-decoration: none; transition: color 0.3s; }
+    .contact-item-value a:hover { color: var(--gold); }
+    .social-row { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.7rem 1.4rem; border: 1px solid;
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.3s; font-family: 'Montserrat', sans-serif;
+    }
+    .social-btn.whatsapp { border-color: #25D366; color: #25D366; }
+    .social-btn.whatsapp:hover { background: #25D366; color: var(--brown); }
+    .social-btn.instagram { border-color: #E4405F; color: #E4405F; }
+    .social-btn.instagram:hover { background: #E4405F; color: var(--white); }
+    .social-btn.tiktok { border-color: var(--off-white); color: var(--off-white); }
+    .social-btn.tiktok:hover { background: var(--off-white); color: var(--brown); }
+
+    /* contact form */
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(250,247,242,0.6); }
+    .form-input, .form-textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--white);
+      padding: 0.85rem 1rem; font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem; outline: none; transition: border-color 0.3s;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(250,247,242,0.3); }
+    .form-submit {
+      padding: 1rem 2rem; background: var(--gold); color: var(--brown);
+      border: none; font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: background 0.3s; font-weight: 600;
+    }
+    .form-submit:hover { background: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0D0603;
+      padding: 2.5rem 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(201,168,76,0.15);
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; color: var(--gold); letter-spacing: 2px;
+    }
+    .footer-copy { font-size: 0.68rem; color: rgba(250,247,242,0.4); letter-spacing: 1px; }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes expand {
+      from { transform: scaleX(0); opacity: 0; }
+      to   { transform: scaleX(1); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; } 50% { opacity: 1; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      #about { grid-template-columns: 1fr; }
+      .about-accent { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { min-height: 250px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:nth-child(1) { grid-column: span 2; min-height: 280px; }
+      .gallery-item:nth-child(5) { grid-column: span 2; min-height: 160px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(27,14,5,0.97); padding: 2rem 5%; gap: 1.5rem; }
+      .nav-links.open { display: flex; }
+      .burger { display: flex; }
+      section { padding: 4rem 5%; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:nth-child(1),
+      .gallery-item:nth-child(5) { grid-column: span 1; min-height: 260px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">Awal Stitches</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+    <li><a href="#why" onclick="closeMenu()">Why Us</a></li>
+    <li><a href="#testimonials" onclick="closeMenu()">Reviews</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+  </ul>
+  <div class="burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Premium Nigerian Fashion House</p>
+    <h1 class="hero-logo-text">Awal<br><span>Stitches</span></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-slogan">"Making You Look Good Is Our Priority."</p>
+    <a href="#services" class="hero-cta">Explore Our Collection</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-image-wrap reveal">
+    <div class="about-image-placeholder">
+      <i class="fas fa-scissors"></i>
+    </div>
+    <div class="about-accent"></div>
+  </div>
+  <div class="reveal">
+    <p class="section-eyebrow">Our Story</p>
+    <h2 class="section-title">Crafted with <em>Passion,</em><br>Worn with Pride</h2>
+    <div class="gold-line"></div>
+    <p class="section-body">
+      Awal Stitches is a premium Nigerian fashion house dedicated to elevating traditional and contemporary style. From richly embroidered native wears to sharp formal suits, every piece we create is a testament to the artistry of our craftsmen and the elegance of our clients.
+    </p>
+    <p class="section-body" style="margin-top: 1rem;">
+      We believe clothing is more than fabric — it is identity, confidence, and culture. Whether you seek a bespoke native agbada for a ceremony or a tailored senator wear for business, we bring your vision to life with precision and care.
+    </p>
+    <div class="about-stat-strip">
+      <div class="stat">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Years in Craft</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Custom Made</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="services-header reveal">
+    <p class="section-eyebrow">What We Offer</p>
+    <h2 class="section-title">Our <em>Services</em></h2>
+    <div class="gold-line"></div>
+    <p class="section-body">From native heritage to modern elegance — every stitch tells a story.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <i class="fas fa-star service-icon"></i>
+      <div class="service-name">Native Wears</div>
+      <p class="service-desc">Rich agbadas, kaftans and native attires crafted for celebrations, ceremonies and everyday royalty.</p>
+    </div>
+    <div class="service-card">
+      <i class="fas fa-user-tie service-icon"></i>
+      <div class="service-name">Senator Wears</div>
+      <p class="service-desc">Refined senator styles that blend classic Nigerian heritage with sharp, modern tailoring.</p>
+    </div>
+    <div class="service-card">
+      <i class="fas fa-hat-cowboy service-icon"></i>
+      <div class="service-name">Native Caps</div>
+      <p class="service-desc">Handcrafted caps to complete your traditional ensemble with authentic Nigerian flair.</p>
+    </div>
+    <div class="service-card">
+      <i class="fas fa-briefcase service-icon"></i>
+      <div class="service-name">Formal Wears</div>
+      <p class="service-desc">Precision-cut suits, shirts and formal attire built to command presence in every room.</p>
+    </div>
+    <div class="service-card">
+      <i class="fas fa-gem service-icon"></i>
+      <div class="service-name">Vintage</div>
+      <p class="service-desc">Timeless vintage-inspired designs that honour the golden age of Nigerian fashion heritage.</p>
+    </div>
+    <div class="service-card">
+      <i class="fas fa-pencil-ruler service-icon"></i>
+      <div class="service-name">Custom Tailoring</div>
+      <p class="service-desc">Your idea, our expertise. Fully bespoke garments designed and sewn to your exact measurements and vision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <p class="section-eyebrow">Our Work</p>
+    <h2 class="section-title">The <em>Gallery</em></h2>
+    <div class="gold-line"></div>
+    <p class="section-body">A glimpse into the artistry behind every Awal Stitches creation.</p>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Luxury Native</span></div>
+    </div>
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Senator Style</span></div>
+    </div>
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Formal Wear</span></div>
+    </div>
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Vintage Piece</span></div>
+    </div>
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Bespoke Creation</span></div>
+    </div>
+    <div class="gallery-item">
+      <i class="fas fa-camera gallery-icon"></i>
+      <div class="gallery-overlay"><span class="gallery-label">Native Caps</span></div>
+    </div>
+  </div>
+  <p class="section-body reveal" style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.6; font-style: italic;">
+    ✦ Upload your own photos to replace the placeholders above when deploying.
+  </p>
+</section>
+
+<!-- ── WHY CHOOSE US ── -->
+<section id="why">
+  <div class="why-grid">
+    <div class="reveal">
+      <p class="section-eyebrow">Why Awal Stitches</p>
+      <h2 class="section-title">Dressed to <em>Impress,</em><br>Built to Last</h2>
+      <div class="gold-line"></div>
+      <ul class="why-list">
+        <li class="why-item">
+          <span class="why-num">I</span>
+          <div class="why-text">
+            <h4>Master Craftsmanship</h4>
+            <p>Every garment is hand-finished by our skilled tailors using premium fabrics sourced for quality and durability.</p>
+          </div>
+        </li>
+        <li class="why-item">
+          <span class="why-num">II</span>
+          <div class="why-text">
+            <h4>Perfect Fit Guarantee</h4>
+            <p>We take precise measurements and offer unlimited alterations until you are completely satisfied with your fit.</p>
+          </div>
+        </li>
+        <li class="why-item">
+          <span class="why-num">III</span>
+          <div class="why-text">
+            <h4>On-Time Delivery</h4>
+            <p>We respect your time. All orders are delivered on the agreed date, with real-time updates along the way.</p>
+          </div>
+        </li>
+        <li class="why-item">
+          <span class="why-num">IV</span>
+          <div class="why-text">
+            <h4>Affordable Luxury</h4>
+            <p>Premium quality does not have to break the bank. We offer competitive pricing without compromise.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="why-visual reveal">
+      <div class="why-visual-inner">
+        <div class="why-big-text">AWAL<br>STITCHES</div>
+      </div>
+      <div class="why-badge">
+        <span class="why-badge-num">★</span>
+        <span class="why-badge-text">Premium</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="testimonials-header reveal">
+    <p class="section-eyebrow">Client Reviews</p>
+    <h2 class="section-title">Words of <em>Praise</em></h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Awal Stitches made my agbada for my wedding and I received compliments all day. The attention to detail was outstanding. I will never go anywhere else."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><i class="fas fa-user"></i></div>
+        <div>
+          <div class="testi-name">Ibrahim A.</div>
+          <div class="testi-role">Wedding Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"My senator wear for the gala event was perfection. They got every measurement exactly right and delivered two days early. Truly professional."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><i class="fas fa-user"></i></div>
+        <div>
+          <div class="testi-name">Chukwuemeka O.</div>
+          <div class="testi-role">Business Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"I ordered custom vintage pieces and the result was beyond my expectations. The quality of the fabric and the finish is comparable to high-end designers."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><i class="fas fa-user"></i></div>
+        <div>
+          <div class="testi-name">Fatima M.</div>
+          <div class="testi-role">Fashion Enthusiast</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">Get in Touch</p>
+      <h2 class="section-title">Let's Create<br>Something <em>Beautiful</em></h2>
+      <div class="gold-line"></div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <p class="contact-item-label">Phone</p>
+            <p class="contact-item-value"><a href="tel:07035629940">0703 562 9940</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <p class="contact-item-label">Email</p>
+            <p class="contact-item-value"><a href="mailto:hassanawal772@gmail.com">hassanawal772@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <p class="contact-item-label">Location</p>
+            <p class="contact-item-value">Nigeria</p>
+          </div>
+        </div>
+      </div>
+      <div class="social-row" style="margin-top: 2rem;">
+        <a href="https://wa.me/2347035629940" target="_blank" class="social-btn whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a href="https://instagram.com/awalstitches" target="_blank" class="social-btn instagram">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://tiktok.com/@awalstitches" target="_blank" class="social-btn tiktok">
+          <i class="fab fa-tiktok"></i> TikTok
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="section-eyebrow">Send a Message</p>
+      <h3 class="section-title" style="font-size: 1.5rem;">Your <em>Order</em> Awaits</h3>
+      <div class="contact-form">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" placeholder="Enter your name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone / Email</label>
+          <input type="text" class="form-input" placeholder="How should we reach you?" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Interested In</label>
+          <input type="text" class="form-input" placeholder="e.g. Native Wear, Senator Wear…" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" rows="4" placeholder="Tell us about your style vision…"></textarea>
+        </div>
+        <button class="form-submit" onclick="handleSubmit()">Send Enquiry</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Awal Stitches</div>
+  <p class="footer-copy">© 2025 Awal Stitches · All Rights Reserved</p>
+  <div style="display: flex; gap: 1.2rem;">
+    <a href="https://wa.me/2347035629940" target="_blank" style="color: rgba(250,247,242,0.4); font-size: 1rem; transition: color 0.3s;" onmouseover="this.style.color='#25D366'" onmouseout="this.style.color='rgba(250,247,242,0.4)'"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://instagram.com/awalstitches" target="_blank" style="color: rgba(250,247,242,0.4); font-size: 1rem; transition: color 0.3s;" onmouseover="this.style.color='#E4405F'" onmouseout="this.style.color='rgba(250,247,242,0.4)'"><i class="fab fa-instagram"></i></a>
+    <a href="https://tiktok.com/@awalstitches" target="_blank" style="color: rgba(250,247,242,0.4); font-size: 1rem; transition: color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(250,247,242,0.4)'"><i class="fab fa-tiktok"></i></a>
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── BURGER ──
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── FORM ──
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#4CAF50';
+    setTimeout(() => {
+      btn.textContent = 'Send Enquiry';
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+
+</body>
+</html>
